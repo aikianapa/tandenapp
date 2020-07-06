@@ -9,6 +9,8 @@ class membersClass extends cmsFormsClass {
         if (isset($item['images'][0])) $image = '/uploads/members/'.$item['id'].'/'.$item['images'][0]['img'];
         if (is_file($_ENV['path_app'].$image)) {
             $item['show']['image'] = $image;
+        } else {
+            $item['show']['image'] = "/forms/members/user.jpg";
         }
         $item['show']['bdate'] = date('d.m.Y',strtotime($item['bdate']));
         if (!isset($item['_form'])) {$item['_form'] = 'members';}

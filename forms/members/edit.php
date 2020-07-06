@@ -97,16 +97,12 @@
                                         </div>
                                     </div>
                                     <wb-multiinput name="parents" class="parents">
-                                    <div class="form-group mg-b-60">
-                                        <div class="col">
-                                            <div class="row">
+
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="parent_name" placeholder="Ф.И.О. родителей"> </div>
                                                 <div class="col-sm-6">
                                                     <input type="phone" class="form-control" name="parent_phone" placeholder="Телефон"> </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     </wb-multiinput>
                                 </div>
                             </div>
