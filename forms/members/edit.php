@@ -33,7 +33,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 control-label">Дата регистрации</label>
                                 <div class="col-sm-3">
-                                    <input type="datepicker" class="form-control" name="clubdate" placeholder="Дата регистрации" required>
+                                    <input type="date" class="form-control" name="clubdate" placeholder="Дата регистрации" required>
                                 </div>
                                 <label class="col-sm-3 control-label">Номер карты</label>
                                 <div class="col-sm-3">
@@ -70,7 +70,7 @@
                                     <div class="form-group row">
                                         <div class="col-sm-3">
                                             <label class="control-label">Дата рождения</label>
-                                            <input type="datepicker" class="form-control" name="bdate" placeholder="Дата рождения"> </div>
+                                            <input type="date" class="form-control" name="bdate" placeholder="Дата рождения"> </div>
                                         <div class="col-sm-6">
                                             <label class="control-label">Адрес проживания</label>
                                             <input type="text" class="form-control" name="address" placeholder="Адрес проживания"> </div>
@@ -111,7 +111,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-6">
                                     <label class="control-label">Дата регистрации</label>
-                                    <input type="datepicker" class="form-control" name="adate" placeholder="Дата регистрации в АКАА"> </div>
+                                    <input type="date" class="form-control" name="adate" placeholder="Дата регистрации в АКАА"> </div>
                                 <div class="col-sm-6">
                                     <label class="control-label">Регистрационный №</label>
                                     <input type="number" class="form-control" name="regnum" placeholder="Регистрационный №"> </div>
@@ -138,7 +138,7 @@
 								<h6>Взносы</h6>
 								<wb-multiinput name="apay">
                       <div class="col-sm-4">
-                          <input type="datepicker" class="form-control" name="apay_date" placeholder="Дата">
+                          <input type="date" class="form-control" name="apay_date" placeholder="Дата">
                       </div>
                       <div class="col-sm-3">
                           <input type="number" class="form-control" name="apay_sum" placeholder="Сумма">
