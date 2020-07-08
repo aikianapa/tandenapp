@@ -1,5 +1,5 @@
 <html>
-<div class="modal fade effect-scale show removable" data-backdrop="static" id="{{_form}}ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade effect-scale show removable saveclose" data-backdrop="static" id="{{_form}}ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,7 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
-                <form id="{{_form}}EditForm" data-wb-form="{{_form}}" data-wb-item="{{_item}}" class="form-horizontal" role="form">
+                <form id="{{_form}}EditForm" class="form-horizontal" role="form">
                   <input type="hidden" name="member" value="{{_post.formdata.member}}" />
                   <input type="hidden" name="account" value="tanden" />
                   <input type="hidden" name="monthes" value="" />

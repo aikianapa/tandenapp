@@ -7,7 +7,6 @@
     <div class="col-sm-6  offset-sm-3">
 
         <form id="visitData" class="m-0">
-
           <div class="card bg-dark text-white">
             <img src="{{show.image}}" class="card-img" alt="">
             <div class="card-img-overlay text-center">
@@ -15,17 +14,30 @@
               <i class="ri-checkbox-circle-line pos-absolute d-none r-0 tx-100 check tx-success"></i>
               <i class="ri-close-circle-line pos-absolute d-none r-0 tx-100 uncheck tx-danger"></i>
 
+              <div class="pos-absolute b-0 text-left">
+                <div class='tickets' id='visitDataTickets'>
+                <template id='visitDataTicketsTpl'>
 
-              <div class="pos-absolute b-0">
+                      <nobr><i class="ri-coupon-3-line"></i> {{tickets}}</nobr>
+                      <br>
+                      <nobr><i class="ri-calendar-line"></i> {{fromdate}} - {{lastdate}}</nobr>
+                </template>
+                </div>
                 <div wb-if='"{{aaac}}"=="on"'><img src="/assets/images/aaac_small_stamp.png" /></div>
                 <div>{{show.bdate}}</div>
               </div>
 
               <div class="pos-absolute t-20 r-20">
-                <a href="#" class="btn btn-primary rounded-pill lh-8 tx-20"
+                <a href="#" class="btn btn-primary rounded-pill lh-8 tx-20 btn-payment"
                 data-ajax="{'url':'/cms/ajax/form/finance/pay/','form':'#visitData','html':'#visitData .modalsBlock'}">
                 <i class="ri-hand-coin-line"></i></a>
               </div>
+              <div class="pos-absolute t-20 r-20 d-none">
+                <a href="#" class="btn btn-warning rounded-pill lh-8 tx-20 btn-credit"
+                data-ajax="{'url':'/cms/ajax/form/finance/credit/','form':'#visitData','html':'#visitData .modalsBlock'}">
+                <i class="ri-hand-coin-line"></i></a>
+              </div>
+
 
             </div>
 
@@ -39,7 +51,7 @@
                 <i class="ri-user-follow-line"></i></a>
               </div>
               <div class="col-6 p-0">
-                <input class="form-control text-center" name="date" type="date" value='{{date("Y-m-d")}}' />
+                <input class="form-control text-center date" name="date" type="date" value='{{date("Y-m-d")}}' />
                 <input type='hidden' name='member' value='{{id}}' />
               </div>
 
@@ -53,6 +65,27 @@
           </div>
           <div class="modalsBlock"></div>
         </form>
+        <div class="modal fade effect-scale" id="ticketWarning" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Внимание!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  <span class="sr-only">Close</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Не найден действующий абонемент</p>
+              </div>
+              <div class="modal-footer">
+                <a href="javascript:$('.btn-payment').trigger('click');" type="button" class="btn btn-primary" data-dismiss="modal">С оплатой</a>
+                <a href="javascript:$('.btn-credit').trigger('click');" type="button" class="btn btn-danger" data-dismiss="modal">Без оплаты</a>
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Отмена</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
   </div>
 
   <wb-empty>
@@ -69,6 +102,12 @@
 </div>
 </wb-data>
 <script>
+
+  $(document).on("wb-save-done",function(ev,params){
+    if (params.params.url == "/ajax/save/finance/") {
+        $("#visitData .btn-success").trigger('click');
+    }
+  });
 
   $("#visitData").off("ajax-done");
   $("#visitData").on("ajax-done",function(ev,params){
@@ -88,9 +127,33 @@
               } else if (strpos(params.url,'success')) {
                   $("#visitData .check").removeClass("d-none");
               }
+          } else if (params.data.error == true) {
+              if (params.data.ticket !== undefined && params.data.ticket == false) {
+                  $('#ticketWarning').modal('show');
+              }
           }
+          $("#visitData input[name=date]").trigger('change');
       }
     }
-  })
+  });
+  $("#visitData input[name=date]").off('change');
+  $("#visitData input[name=date]").on('change', async function(){
+      let res = await wbapp.postSync('/cms/ajax/form/visits/check/',{
+        date:$("#visitData input[name=date]").val(),
+        member:$("#visitData input[name=member]").val()
+      });
+      if (res.visit == false) {
+          $("#visitData .check").addClass("d-none");
+      } else {
+          $("#visitData .check").removeClass("d-none");
+      }
+      wbapp.renderTemplate({
+        _tid:'#visitDataTicketsTpl',
+        bind:'cms.visit.tickets',
+        target:'#visitDataTickets'
+      },res);
+  });
+
+  $("#visitData input[name=date]").trigger('change');
 </script>
 </html>
