@@ -12,6 +12,8 @@ body {
     line-height: 14px;
     margin: 0;
     color: #FFFFFF;
+    width: 100vw;
+    overflow-x: hidden;
 }
 .bg-gold {
     background: var(--color-gold);
@@ -305,6 +307,16 @@ section {
     padding-left: 30px;
 }
 
+
+@media (max-width: 575px) {
+    #carousel .carousel-control-prev {
+         right: 50px;   
+    }
+    
+    #carousel .carousel-control-next {
+        right: 30px;
+    }
+}
 /* Services */
 
 #services {
@@ -351,7 +363,7 @@ section {
     filter:none;    
 }
 
-h5 {
+#services .box h5 {
     font-weight: bold;
     font-size: 18px;
     line-height: 22px;
@@ -360,6 +372,12 @@ h5 {
     text-transform: uppercase;
     text-decoration: none;
     color: white;
+}
+
+@media (max-width: 575px) {
+    #services {
+        text-align: center;
+    } 
 }
 
 /* About */
