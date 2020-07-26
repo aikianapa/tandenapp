@@ -1,6 +1,6 @@
 <html>
-<div class="modal fade effect-scale show removable" id="{{_form}}ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+<div class="modal fade effect-scale show removable" data-backdrop="static" id="{{_form}}ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
@@ -152,10 +152,22 @@
 
                         </div>
                         <div id="{{_form}}Finance" class="tab-pane fade" role="tabpanel">
-                            <div class="block" data-wb-role="foreach" data-wb-table="finance" data-wb-where=' member = "{{id}}"' data-wb-sort="date:d" data-wb-size="100"> <a data-wb-ajax="/form/edit/finance/{{id}}" data-wb-append="body" class="btn btn-sm btn-info mb-1 mr-1">{{date}}</a> </div>
+                            <div class="block">
+                            <wb-foreach wb="table=finance&size=100&sort=date:d" wb-filter='{"member":"{{id}}"}'>
+                                <a data-ajax="{'url':'/cms/ajax/form/finance/edit/{{id}}','html':'.members-edit-modal'}" class="btn btn-sm btn-info mb-1 mr-1">
+                                {{date("d.m.Y",strtotime({{date}}))}}
+                                </a> 
+                            </wb-foreach>
+                             
+                              
+                                </div>
                         </div>
                         <div id="{{_form}}Visits" class="tab-pane fade" role="tabpanel">
-                            <div class="block" data-wb-role="foreach" data-wb-table="visits" data-wb-where=' members like "{{id}}"' data-wb-sort="date:d" data-wb-size="100"> <span class="btn btn-sm btn-info mb-1 mr-1">{{date}}</span> </div>
+                            <div class="block">
+                            <wb-foreach wb="table=visits&size=100&sort=id:d" wb-filter='{"members": {"$like":"{{id}}"} }'>
+                                <span class="btn btn-sm btn-info mb-1 mr-1">{{id}}</span>
+                            </wb-foreach>
+                            </div>
                         </div>
                         <div id="{{_form}}Images" class="tab-pane fade" role="tabpanel">
                             <wb-module wb="{'module':'filepicker','path':'/uploads/members/{{id}}/'}" name="images" />

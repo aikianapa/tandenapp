@@ -24,7 +24,7 @@ class visitsClass extends cmsFormsClass
         $list = [];
         $line = [];
         $rep = [];
-        //echo $app->vars('_post.formdata.month');
+        if ($app->vars('_post.formdata.month') == "") {$app->vars('_post.formdata.month',date('Y-m'));}
         if ($app->vars('_post.formdata.month')>"") {
             $mon = explode("-", $app->vars('_post.formdata.month'));
             $days = cal_days_in_month(CAL_GREGORIAN, $mon[1], $mon[0]);
@@ -80,6 +80,8 @@ class visitsClass extends cmsFormsClass
       $result['fromdate'] = date('d.m.Y',strtotime($result['fromdate']));
       $result['lastdate'] = date('d.m.Y',strtotime($result['lastdate']));
       $result['tickets'] = count($free);
+      $credits = $ti->creditTickets($date,$member);
+      $result['credits'] = count($credits);
       echo json_encode($result);
     }
 

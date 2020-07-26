@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-sm-6  offset-sm-3">
 
-        <form id="visitData" class="m-0">
+        <form id="visitData" class="m-0" style="height: calc(100vh - 60px);">
           <div class="card bg-dark text-white">
             <img src="{{show.image}}" class="card-img" alt="">
             <div class="card-img-overlay text-center">
@@ -14,17 +14,23 @@
               <i class="ri-checkbox-circle-line pos-absolute d-none r-0 tx-100 check tx-success"></i>
               <i class="ri-close-circle-line pos-absolute d-none r-0 tx-100 uncheck tx-danger"></i>
 
-              <div class="pos-absolute b-0 text-left">
-                <div class='tickets' id='visitDataTickets'>
-                <template id='visitDataTicketsTpl'>
-
-                      <nobr><i class="ri-coupon-3-line"></i> {{tickets}}</nobr>
-                      <br>
-                      <nobr><i class="ri-calendar-line"></i> {{fromdate}} - {{lastdate}}</nobr>
-                </template>
+              <div class="pos-absolute r-10 b-10"><img src="/assets/images/aaac_small_stamp.png"></div>
+              <div class="pos-absolute b-10 text-left">
+                <div class="card bg-white-3">
+                  <div class="card-body">
+                    <div class='tickets' id='visitDataTickets'>
+                    <template id='visitDataTicketsTpl'>
+                          <nobr><i class="ri-coupon-3-line"></i> {{tickets}}</nobr>
+                          {{#if credits }}
+                          &nbsp;&nbsp;<nobr class='tx-danger'><i class="ri-coupon-3-fill"></i> {{credits}}</nobr>
+                          {{/if}}
+                          <br>
+                          <nobr><i class="ri-calendar-line"></i> {{fromdate}} - {{lastdate}}</nobr>
+                    </template>
+                    </div>
+                    <div><nobr><i class="ri-star-smile-line"></i> {{show.bdate}}</nobr></div>
+                  </div>
                 </div>
-                <div wb-if='"{{aaac}}"=="on"'><img src="/assets/images/aaac_small_stamp.png" /></div>
-                <div>{{show.bdate}}</div>
               </div>
 
               <div class="pos-absolute t-20 r-20">
@@ -156,4 +162,9 @@
 
   $("#visitData input[name=date]").trigger('change');
 </script>
+<style>
+    #visitData > .card {
+        height: calc( 100vh - 140px);
+    }    
+</style>
 </html>

@@ -17,6 +17,18 @@ class ticketsClass extends cmsFormsClass {
     return $list['list'];
   }
 
+  function creditTickets($date, $member) {
+    $list = $this->app->itemList('tickets',[
+        'filter' => [
+              'member'=> $member,
+              'tarif'=> 'credit',
+              'stop'  => ['$gte' => $date]
+        ]
+    ]);
+    return $list['list'];
+  }
+
+
   function getTicket($date, $member) {
       $app = $this->app;
       $list = $app->itemList('tickets',[
