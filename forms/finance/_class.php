@@ -8,6 +8,27 @@ class financeClass extends cmsFormsClass {
         if (isset($item['member']) AND $item['member']> "") $item['show']['member'] = wbCorrelation("members",$item['member'],"name");
     }
 
+    public function beforeItemSave(&$item) {
+        $app = $this->app;
+        if (isset($item['credits']) AND $item['credits'] > '' AND strtotime($item['_created'])+1000 > strtotime('now')) {
+            // При первом сохранении чистим кредиты
+              $tickets = $app->itemList('tickets',[
+                'filter'=>[
+                    'member' => $item['member'],
+                    'tarif' => 'credit',
+                    'closed' => NULL
+                ],
+                'sort' => ['used:d'],
+                'limit' => $item['credits']
+              ]);
+            foreach($tickets['list'] as $ticket) {
+                $ticket['closed'] = $item['id'];
+                $app->itemSave('tickets',$ticket,false);
+            }
+            $app->tableFlush('tickets');
+        }
+    }
+    
     public function afterItemSave(&$item) {
       $app = $this->app;
       $pay = new Dot($item);
@@ -18,13 +39,20 @@ class financeClass extends cmsFormsClass {
       $app = $this->app;
       $tickets = $app->itemList('tickets',[
         'filter'=>[
-          'payment' => $item['id']
+          '$or' => [
+            'payment' => $item['id'],
+            'closed' => $item['id']
+          ]
         ],
         '_sort' => ['used:d']
       ]);
+        //print_r($tickets['list']);        die;
       foreach($tickets['list'] as $ticket) {
-          if ($ticket['used'] == false) {
+          if ($ticket['used'] == false OR ($ticket['tarif'] == 'credit' AND $ticket['payment'] == $item['id'] )) {
               $app->itemRemove('tickets',$ticket['id'],false);
+          } else if ($ticket['closed'] > '') {
+              unset($ticket['closed']);
+              $app->itemSave('tickets',$ticket,false);
           } else {
               $ticket['dirty'] = true;
               $app->itemSave('tickets',$ticket,false);

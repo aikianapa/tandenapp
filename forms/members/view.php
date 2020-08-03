@@ -16,7 +16,7 @@
 
               <div class="pos-absolute r-10 b-10"><img src="/assets/images/aaac_small_stamp.png"></div>
               <div class="pos-absolute b-10 text-left">
-                <div class="card bg-white-3">
+                <div class="card bg-black-3">
                   <div class="card-body">
                     <div class='tickets' id='visitDataTickets'>
                     <template id='visitDataTicketsTpl'>
@@ -25,7 +25,11 @@
                           &nbsp;&nbsp;<nobr class='tx-danger'><i class="ri-coupon-3-fill"></i> {{credits}}</nobr>
                           {{/if}}
                           <br>
+                          {{#if lastdate !== '01.01.1970'}}
                           <nobr><i class="ri-calendar-line"></i> {{fromdate}} - {{lastdate}}</nobr>
+                          {{else}}
+                          <nobr class="tx-danger"><i class="ri-calendar-line"></i> Нет тикетов</nobr>
+                          {{/if}}
                     </template>
                     </div>
                     <div><nobr><i class="ri-star-smile-line"></i> {{show.bdate}}</nobr></div>
@@ -111,7 +115,7 @@
 
   $(document).on("wb-save-done",function(ev,params){
     if (params.params.url == "/ajax/save/finance/") {
-        $("#visitData .btn-success").trigger('click');
+        $("#visitData .btn-success").trigger('tap click');
     }
   });
 

@@ -82,6 +82,7 @@ class visitsClass extends cmsFormsClass
       $result['tickets'] = count($free);
       $credits = $ti->creditTickets($date,$member);
       $result['credits'] = count($credits);
+      $result['credits_data'] = $credits;
       echo json_encode($result);
     }
 
@@ -141,8 +142,10 @@ class visitsClass extends cmsFormsClass
             $visit = $visits['members'][$index];
             if (isset($visit['ticket']) AND $visit['ticket'] > '') {
                 $ticket = $this->app->itemRead('tickets',$visit['ticket']);
-                $ticket['used'] = false;
-                $this->app->itemSave('tickets', $ticket);
+                if ($ticket) {
+                    $ticket['used'] = false;
+                    $this->app->itemSave('tickets', $ticket);
+                }
             }
             array_splice($visits['members'], $index, 1);
             $res = $this->app->itemSave('visits', $visits);

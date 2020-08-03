@@ -25,6 +25,11 @@ class ticketsClass extends cmsFormsClass {
               'stop'  => ['$gte' => $date]
         ]
     ]);
+    foreach($list['list'] as $i => $item) {
+        if (isset($item['closed']) AND $item['closed'] > '') {
+            unset($list['list'][$i]);
+        }
+    }
     return $list['list'];
   }
 
