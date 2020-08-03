@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Bonique - Beauty & Cosmetic eCommerce HTML Template </title>
+    <title>{{header}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -21,12 +21,10 @@
 
 <body>
 <div class="container">
-    <section>
-        <wb-include wb="form=finance&mode=tarifs" />
-    </section>
-    <section>
-        <a href="/dogovor">Новый текст договора</a>
-    </section>
+    <h1>{{header}}</h1>
+    <div>
+        {{text}}
+    </div>
 </div>
 </body>
 </html>
