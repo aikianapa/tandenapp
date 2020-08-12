@@ -1,5 +1,5 @@
 <?php
-function test() {
-	echo 12341234;
+function modCmsBeforeShow(&$cms) {
+		$cms->find('title')->after('<link rel="manifest" href="/cms_manifest.json">');
 }
 ?>

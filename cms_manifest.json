@@ -1,0 +1,15 @@
+{
+	"name": "Клуб Тандэн",
+	"icons": [{
+		"src": "/thumbc/64x64/src/assets/images/logo.png",
+		"sizes": "64x64"
+	},{
+		"src": "/thumbc/128x128/src/assets/images/logo.png",
+		"sizes": "128x128"
+	}, {
+		"src": "/thumbc/256x256/src/assets/images/logo.png",
+		"sizes": "256x256"
+	}],
+	"display": "fullscreen",
+	"orientation": "portrait"
+}

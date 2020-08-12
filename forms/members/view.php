@@ -168,7 +168,7 @@
 </script>
 <style>
     #visitData > .card {
-        height: calc( 100vh - 140px);
-    }    
+        height: calc( 100vh - 200px);
+    }
 </style>
 </html>
