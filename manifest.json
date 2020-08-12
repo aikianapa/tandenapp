@@ -1,0 +1,8 @@
+{
+    "name": "Клуб Тандэн",
+		"display": "fullscreen",
+    "icons": [{
+        "src": "assets/images/logo.png",
+        "sizes": "64x64"
+    }]
+}
