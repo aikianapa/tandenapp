@@ -8,8 +8,7 @@
 
         <form id="visitData" class="m-0" style="height: calc(100vh - 60px);">
           <div class="card bg-dark text-white">
-            <img src="{{show.image}}" class="card-img" alt="">
-            <div class="card-img-overlay text-center">
+            <div class="card-img-overlay text-center" style="background-image:url({{show.image}})">
               <h5 class="card-title">{{name}}</h5>
               <i class="ri-checkbox-circle-line pos-absolute d-none r-0 tx-100 check tx-success"></i>
               <i class="ri-close-circle-line pos-absolute d-none r-0 tx-100 uncheck tx-danger"></i>
@@ -170,5 +169,10 @@
     #visitData > .card {
         height: calc( 100vh - 200px);
     }
+		#visitData .card-img-overlay {
+				background-size: cover;
+	    	background-repeat: no-repeat;
+	    	background-size: cover;
+		}
 </style>
 </html>

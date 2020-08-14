@@ -45,13 +45,12 @@
 
                   </div>
 
-
-
                   <div class="input-group mg-b-10">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ri-calendar-line"></i></span>
                     </div>
-                    <input class="form-control" name="date" type="date" value='{{date("Y-m-d")}}' />
+                    <input class="form-control" name="date" type="date" value='{{date("Y-m-d")}}' wb-if='"{{_route.id}}" !== "_new"' disabled />
+										<input class="form-control" name="date" type="date" value='{{date("Y-m-d")}}' wb-if='"{{_route.id}}" == "_new"' />
                   </div>
 
                   <div class="input-group mg-b-10">

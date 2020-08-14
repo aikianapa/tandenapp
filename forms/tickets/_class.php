@@ -10,7 +10,7 @@ class ticketsClass extends cmsFormsClass {
         'filter' => [
               'member'=> $member,
               'used' => false,
-              'stop'  => ['$lte' => $date]
+              'stop'  => ['$gte' => $date]
         ],
         'sort' => 'stop'
     ]);
@@ -22,7 +22,7 @@ class ticketsClass extends cmsFormsClass {
         'filter' => [
               'member'=> $member,
               'tarif'=> 'credit',
-              'stop'  => ['$gte' => $date]
+              'stop'  => ['$lte' => $date]
         ]
     ]);
     foreach($list['list'] as $i => $item) {
@@ -40,8 +40,8 @@ class ticketsClass extends cmsFormsClass {
           'filter' => [
                 'member'=> $member,
                 'used' => false,
-                'start' => ['$gte' => $date],
-                'stop'  => ['$lte' => $date]
+                'start' => ['$lte' => $date],
+                'stop'  => ['$gte' => $date]
           ],
           'limit' => 1
       ]);

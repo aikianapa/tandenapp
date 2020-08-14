@@ -10,29 +10,61 @@ class financeClass extends cmsFormsClass {
 
     public function beforeItemSave(&$item) {
         $app = $this->app;
-        if (isset($item['credits']) AND $item['credits'] > '' AND strtotime($item['_created'])+1000 > strtotime('now')) {
-            // При первом сохранении чистим кредиты
-              $tickets = $app->itemList('tickets',[
-                'filter'=>[
-                    'member' => $item['member'],
-                    'tarif' => 'credit',
-                    'closed' => NULL
-                ],
-                'sort' => ['used:d'],
-                'limit' => $item['credits']
-              ]);
-            foreach($tickets['list'] as $ticket) {
-                $ticket['closed'] = $item['id'];
-                $app->itemSave('tickets',$ticket,false);
-            }
-            $app->tableFlush('tickets');
-        }
+				$newitem = false;
+				$checked = 0;
+				$lessons = $item['lessons'];
+				$start = $item['date'];
+	      if ($item['monthes'] == 0) {
+	          $stop = $start;
+	      } else {
+	          $stop = date('Y-m-d',strtotime($start. '+'.$item['monthes'].' month -1 day'));
+	      }
+				if (!isset($app->route->item) OR $app->route->item == '_new' ) $newitem = true;
+
+				if ($newitem) {
+						/******* При первом сохранении чистим кредиты  ********/
+						if (isset($item['credits']) AND $item['credits'] > '') {
+		              $tickets = $app->itemList('tickets',[
+		                'filter'=>[
+		                    'member' => $item['member'],
+		                    'tarif' => 'credit',
+		                    'closed' => NULL
+		                ],
+		                'sort' => ['used:d'],
+		                'limit' => $item['credits']
+		              ]);
+									$item['credits'] = [];
+		            foreach($tickets['list'] as $ticket) {
+		                $ticket['closed'] = $item['id'];
+		                $ticket = $app->itemSave('tickets',$ticket,false);
+										if ($ticket) $item['credits'][] = $ticket['id'];
+										$checked++;
+		            }
+		            $app->tableFlush('tickets');
+		        }
+						/******* И создаём тикеты *******/
+						$item['tickets'] = [];
+						for ($i=1; $i<=($lessons - $checked); $i++) {
+	              $ticket = [
+	                '_id' => wbNewId('','ti'),
+	                'payment' => $item['id'],
+	                'tarif' => $item['tarif'],
+	                'start' => $start,
+	                'stop'  => $stop,
+	                'member' => $item['member'],
+	                'used'  => false
+	              ];
+	              $ticket = $app->itemSave('tickets',$ticket,false);
+								if ($ticket) $item['tickets'][] = $ticket;
+	          }
+						$app->tableFlush('tickets');
+				}
     }
-    
+
     public function afterItemSave(&$item) {
       $app = $this->app;
       $pay = new Dot($item);
-      if ($pay->get('tarif')) $this->updateTickets($pay);
+      //if ($pay->get('tarif')) $this->updateTickets($pay);
     }
 
     public function beforeItemRemove(&$item) {
@@ -46,21 +78,35 @@ class financeClass extends cmsFormsClass {
         ],
         '_sort' => ['used:d']
       ]);
-        //print_r($tickets['list']);        die;
+
+
+			/*
+
+			если в тикет присутствует в item.credits, то восстанавливаем tarif credit
+			если тикет погашен, то переводим его в состояние credit
+			если тикет не погашен, то просто его удаляем
+
+			*/
+
+
+
+
+/*
       foreach($tickets['list'] as $ticket) {
+					if (isset($item['credits']) AND is_array($item['credits']) AND in_array($ticket['id'],$item['credits'])) {
+							$ticket['tarif'] = 'credit';
+					}
           if ($ticket['used'] == false OR ($ticket['tarif'] == 'credit' AND $ticket['payment'] == $item['id'] )) {
               $app->itemRemove('tickets',$ticket['id'],false);
           } else if ($ticket['closed'] > '') {
               unset($ticket['closed']);
               $app->itemSave('tickets',$ticket,false);
-          } else {
-              $ticket['dirty'] = true;
-              $app->itemSave('tickets',$ticket,false);
           }
       }
       $app->tableFlush('tickets');
+			*/
     }
-
+/*
     function updateTickets(&$pay) {
       $app = $this->app;
       $tickets = $app->itemList('tickets',[
@@ -79,12 +125,14 @@ class financeClass extends cmsFormsClass {
       }
       $checked = 0;
       $remove = [];
+			$credits = [];
+			if (is_array($pay->get('credits'))) $credits = $pay->get('credits');
       foreach($tickets["list"] as &$ticket) {
           $ticket['start'] = $start;
           $ticket['stop'] = $stop;
           $checked++;
           if ($checked > $lessons) {
-              if ($ticket['used'] == '') {
+              if ($ticket['used'] == '' AND !in_array($ticket['id'],$credits)) {
                   $remove[] = $ticket['id'];
               } else {
                   $checked--;
@@ -110,5 +158,6 @@ class financeClass extends cmsFormsClass {
       }
       $app->tableFlush('tickets');
     }
+		*/
 }
 ?>
