@@ -28,26 +28,52 @@ class visitsClass extends cmsFormsClass
         if ($app->vars('_post.formdata.month')>"") {
             $mon = explode("-", $app->vars('_post.formdata.month'));
             $days = cal_days_in_month(CAL_GREGORIAN, $mon[1], $mon[0]);
-            $list = $app->itemList("visits", [
-                'filter' => ['month' => $app->vars('_post.formdata.month') ]
-            ]);
-            $list = $list["list"];
             for ($i=1;$i<=$days;$i++) {
                 $line[$i] = "";
             }
             $rep = [];
-            foreach ($list as $item) {
-                $d = explode('-', $item['id'])[2]*1;
-                foreach ((array)$item['members'] as $m) {
-                    if (is_array($m) && !isset($rep[$m['member']])) {
-                        $name=$app->correlation('members', $m['member'], 'name');
-                        $rep[$m['member']] = ['id'=>$m['member'],'name'=>$name,'days'=>$line];
-                    }
-                    if (isset($m['member'])) {
-                        $rep[$m['member']]['days'][$d] = "on";
-                    }
-                }
-            }
+
+
+						if ($app->vars('_post.formdata.month') >= '2020-08') {
+								$tickets = $app->itemList("tickets", [
+									'filter' => [
+											'$and' => [
+													'$gte' => ['used' => $app->vars('_post.formdata.month').'-01'],
+													'$lte' => ['used' => $app->vars('_post.formdata.month').'-31']
+											]
+									]
+								]);
+								foreach($tickets['list'] as $item) {
+										if (!isset($rep[$item['member']])) {
+												$rep[$item['member']] = [
+														'id' => $item['member'],
+														'name' => wbCorrelation('members',$item['member'],'name'),
+														'days' => $line
+												];
+										}
+										$d = explode('-', $item['used'])[2]*1;
+										$rep[$item['member']]['days'][$d] = 'success';
+										if ($item['tarif'] == 'credit') $rep[$item['member']]['days'][$d] = 'danger';
+								}
+
+						} else {
+								$list = $app->itemList("visits", [
+		                'filter' => ['month' => $app->vars('_post.formdata.month') ]
+		            ]);
+		            $list = $list["list"];
+								foreach ($list as $item) {
+		                $d = explode('-', $item['id'])[2]*1;
+		                foreach ((array)$item['members'] as $m) {
+		                    if (is_array($m) && !isset($rep[$m['member']])) {
+		                        $name=$app->correlation('members', $m['member'], 'name');
+		                        $rep[$m['member']] = ['id'=>$m['member'],'name'=>$name,'days'=>$line];
+		                    }
+		                    if (isset($m['member'])) {
+		                        $rep[$m['member']]['days'][$d] = "on";
+		                    }
+		                }
+		            }
+						}
         }
         $form->fetch(['rep'=>$rep,'days'=>$line]);
         echo $form->outer();

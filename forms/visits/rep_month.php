@@ -33,8 +33,8 @@
             {{name}}
           </td>
           <wb-foreach wb="from=days">
-            <td wb-if='"{{_val}}"=="on"' class="p-1">
-              <i class="ri-check-fill tx-success tx-bold" title="{{_ndx}}"></i>
+            <td wb-if='"{{_val}}" > ""' class="p-1">
+              <i class="ri-check-fill tx-success tx-{{_val}} tx-bold" title="{{_ndx}}"></i>
             </td>
             <td wb-if='"{{_val}}"==""' class="p-1">
               <i class="ri-close-line tx-gray-300"></i>
