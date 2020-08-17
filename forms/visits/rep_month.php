@@ -6,7 +6,7 @@
       data-ajax="{'url':'/cms/ajax/form/visits/rep_month/','form':'#repMonth','html':'.content-body'}"
     />
   </form>
-  <table class="tx-14 table table-bordered table-hover table-sm table-striped">
+  <table class="tx-14 table table-bordered table-hover table-sm table-striped table-responsive">
     <thead>
       <tr>
         <th class="p-1">
