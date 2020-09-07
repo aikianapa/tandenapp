@@ -88,8 +88,8 @@
                 <p>Не найден действующий абонемент</p>
               </div>
               <div class="modal-footer">
-                <a href="javascript:$('.btn-payment').trigger('click');" type="button" class="btn btn-primary" data-dismiss="modal">С оплатой</a>
-                <a href="javascript:$('.btn-credit').trigger('click');" type="button" class="btn btn-danger" data-dismiss="modal">Без оплаты</a>
+                <a href="#" onclick="$('a.btn-payment').trigger('click');" type="button" class="btn btn-primary" data-dismiss="modal">С оплатой</a>
+                <a href="#" onclick="$('a.btn-credit').trigger('click');" type="button" class="btn btn-danger" data-dismiss="modal">Без оплаты</a>
                 <button type="button" class="btn btn-secondary"  data-dismiss="modal">Отмена</button>
               </div>
             </div><!-- /.modal-content -->

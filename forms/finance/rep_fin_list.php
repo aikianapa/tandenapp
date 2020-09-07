@@ -5,6 +5,11 @@
                 Тарифы
             </a>
         </li>
+        <li class="nav-item">
+            <a href="#" data-ajax="{'url':'/cms/ajax/form/finance/payments','html':'.content-body'}" class="nav-link">
+                Платежи
+            </a>
+        </li>
     </ul>
     
 </html>

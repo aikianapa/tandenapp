@@ -6,6 +6,11 @@ class financeClass extends cmsFormsClass {
     public function beforeItemShow(&$item) {
         $item['show'] = [];
         if (isset($item['member']) AND $item['member']> "") $item['show']['member'] = wbCorrelation("members",$item['member'],"name");
+        $item['date'] =  date('d.m.Y',strtotime($item['date']));
+    }
+
+    public function afterItemRead(&$item) {
+        if (!isset($item['month'])) $item['month'] = date('Y-m',strtotime($item['date']));
     }
 
     public function beforeItemSave(&$item) {
