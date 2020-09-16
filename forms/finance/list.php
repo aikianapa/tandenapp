@@ -4,7 +4,7 @@
 
 
     <nav class="nav navbar navbar-expand-md col">
-      <a class="navbar-brand tx-bold tx-spacing--2 order-1" href="javascript:">Клиенты</a>
+      <a class="navbar-brand tx-bold tx-spacing--2 order-1" href="javascript:">Финансы</a>
       <button class="navbar-toggler order-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="wd-20 ht-20 fa fa-ellipsis-v"></i>

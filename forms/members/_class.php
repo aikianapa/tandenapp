@@ -5,8 +5,14 @@ class membersClass extends cmsFormsClass {
         $image = "";
         $item['show'] = [
             "image"=> $image
-        ];
-        if (isset($item['images'][0])) $image = '/uploads/members/'.$item['id'].'/'.$item['images'][0]['img'];
+        ];  
+        
+        if (isset($item['images'][0]) && !is_file($_ENV['path_app'].$item['images'][0]['img'])) {
+            $image = '/uploads/members/'.$item['id'].'/'.$item['images'][0]['img'];
+        } else if (isset($item['images'][0])) {
+            $image = $item['images'][0]['img'];
+        }
+        $image = str_replace('//','/',$image);
         if (is_file($_ENV['path_app'].$image)) {
             $item['show']['image'] = $image;
         } else {
