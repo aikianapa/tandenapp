@@ -1,13 +1,16 @@
 <html>
-<div class="modal fade effect-scale contain show removable" data-backdrop="static" id="{{_form}}ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade effect-scale contain show removable" data-backdrop="static" id="{{_form}}ModalEdit" tabindex="-1"
+    role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span
+                        aria-hidden="true">&times;</span> </button>
                 <h5 class="modal-title">{{header}}</h5>
             </div>
             <div class="modal-body">
-                <form id="{{_form}}EditForm" data-wb-form="{{_form}}" data-wb-item="{{_item}}" class="form-horizontal" role="form">
+                <form id="{{_form}}EditForm" data-wb-form="{{_form}}" data-wb-item="{{_item}}" class="form-horizontal"
+                    role="form">
                     <div class="form-group row">
                         <label class="col-sm-1 control-label">ID</label>
                         <div class="col-sm-2">
@@ -20,7 +23,8 @@
                     </div>
                     <nav>
                         <div class="nav nav-tabs" role="tablist">
-                            <a class="nav-item nav-link active" href="#{{_form}}Descr" data-toggle="tab">Характеристики</a>
+                            <a class="nav-item nav-link active" href="#{{_form}}Descr"
+                                data-toggle="tab">Характеристики</a>
                             <a class="nav-item nav-link" href="#{{_form}}Aaac" data-toggle="tab">Ассоциация</a>
                             <a class="nav-item nav-link" href="#{{_form}}Visits" data-toggle="tab">Посещения</a>
                             <a class="nav-item nav-link" href="#{{_form}}Finance" data-toggle="tab">Финансы</a>
@@ -33,25 +37,29 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 control-label">Дата регистрации</label>
                                 <div class="col-sm-3">
-                                    <input type="date" class="form-control" name="clubdate" placeholder="Дата регистрации" required>
+                                    <input wb="module=datetimepicker" type="datepicker" class="form-control" name="clubdate"
+                                        placeholder="Дата регистрации" required>
                                 </div>
                                 <label class="col-sm-3 control-label">Номер карты</label>
                                 <div class="col-sm-3">
-                                    <input type="text" wb-mask="9990000009999" class="form-control" name="card" placeholder="Номер карты">
+                                    <input type="text" wb-mask="9990000009999" class="form-control" name="card"
+                                        placeholder="Номер карты">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 control-label">Архив</label>
                                 <div class="col-sm-2">
                                     <label class="switch switch-success">
-                                        <input type="checkbox" name="arch"><span></span></label>
+                                    <input wb="module=switch" name="arch" />
+                                    </label>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group row">
                                         <label class="col-sm-4 control-label">Договор</label>
                                         <div class="col-sm-2">
                                             <label class="switch switch-success">
-                                                <input type="checkbox" name="doc"><span></span></label>
+                                                <input wb="module=switch" name="doc" />
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +68,8 @@
                                         <label class="col-sm-3 control-label">Ребёнок</label>
                                         <div class="col-sm-2">
                                             <label class="switch switch-success">
-                                                <input type="checkbox" name="child"><span></span></label>
+                                                <input wb="module=switch" name="child" />   
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -70,21 +79,30 @@
                                     <div class="form-group row">
                                         <div class="col-sm-3">
                                             <label class="control-label">Дата рождения</label>
-                                            <input type="date" class="form-control" name="bdate" placeholder="Дата рождения"> </div>
+                                            <input  wb="module=datetimepicker" type="datepicker" class="form-control" name="bdate"
+                                                placeholder="Дата рождения">
+                                        </div>
                                         <div class="col-sm-6">
                                             <label class="control-label">Адрес проживания</label>
-                                            <input type="text" class="form-control" name="address" placeholder="Адрес проживания"> </div>
+                                            <input type="text" class="form-control" name="address"
+                                                placeholder="Адрес проживания">
+                                        </div>
                                         <div class="col-sm-3">
                                             <label class="control-label">Телефон</label>
-                                            <input type="phone" class="form-control" name="phone" placeholder="Контактный телефон"> </div>
+                                            <input type="phone" class="form-control" name="phone"
+                                                placeholder="Контактный телефон">
+                                        </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6">
                                             <label class="control-label">Место работы (учёбы)</label>
-                                            <input type="text" class="form-control" name="employment" placeholder="Место работы (учёбы)"> </div>
+                                            <input type="text" class="form-control" name="employment"
+                                                placeholder="Место работы (учёбы)">
+                                        </div>
                                         <div class="col-sm-6">
                                             <label class="control-label">Должность</label>
-                                            <input type="text" class="form-control" name="job" placeholder="Должность"> </div>
+                                            <input type="text" class="form-control" name="job" placeholder="Должность">
+                                        </div>
                                     </div>
                                     <div class="d-none d-sm-block">
                                         <div class="form-group row mg-b-0 parents">
@@ -98,10 +116,14 @@
                                     </div>
                                     <wb-multiinput name="parents" class="parents">
 
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control" name="parent_name" placeholder="Ф.И.О. родителей"> </div>
-                                                <div class="col-sm-6">
-                                                    <input type="phone" class="form-control" name="parent_phone" placeholder="Телефон"> </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="parent_name"
+                                                placeholder="Ф.И.О. родителей">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="phone" class="form-control" name="parent_phone"
+                                                placeholder="Телефон">
+                                        </div>
 
                                     </wb-multiinput>
                                 </div>
@@ -111,10 +133,14 @@
                             <div class="form-group row">
                                 <div class="col-sm-6">
                                     <label class="control-label">Дата регистрации</label>
-                                    <input type="date" class="form-control" name="adate" placeholder="Дата регистрации в АКАА"> </div>
+                                    <input  wb="module=datetimepicker" type="datepicker" class="form-control" name="adate"
+                                        placeholder="Дата регистрации в АКАА">
+                                </div>
                                 <div class="col-sm-6">
                                     <label class="control-label">Регистрационный №</label>
-                                    <input type="number" class="form-control" name="regnum" placeholder="Регистрационный №"> </div>
+                                    <input type="number" class="form-control" name="regnum"
+                                        placeholder="Регистрационный №">
+                                </div>
                             </div>
                             <div class="cart" id="exam">
                                 <h6>Аттестации</h6>
@@ -123,7 +149,8 @@
                                         <input type="date" class="form-control" name="ldate" placeholder="Дата">
                                     </div>
                                     <div class="col-sm-2">
-                                        <input type="number" class="form-control" name="level" data-wb-mask="9" placeholder="Уровень">
+                                        <input type="number" class="form-control" name="level" data-wb-mask="9"
+                                            placeholder="Уровень">
                                     </div>
                                     <div class="col-sm-2">
                                         <select name="kudan" class="form-control" placeholder="Кю/Дан">
@@ -134,39 +161,41 @@
                                 </wb-multiinput>
                             </div>
 
-							<div class="cart" id="fees">
-								<h6>Взносы</h6>
-								<wb-multiinput name="apay">
-                      <div class="col-sm-4">
-                          <input type="date" class="form-control" name="apay_date" placeholder="Дата">
-                      </div>
-                      <div class="col-sm-3">
-                          <input type="number" class="form-control" name="apay_sum" placeholder="Сумма">
-                      </div>
-                      <div class="col-sm-2">
-                          <input type="number" class="form-control" name="apay_year" placeholder="Год">
-                      </div>
-								</wb-multiinput>
+                            <div class="cart" id="fees">
+                                <h6>Взносы</h6>
+                                <wb-multiinput name="apay">
+                                    <div class="col-sm-4">
+                                        <input type="date" class="form-control" name="apay_date" placeholder="Дата">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="number" class="form-control" name="apay_sum" placeholder="Сумма">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" name="apay_year" placeholder="Год">
+                                    </div>
+                                </wb-multiinput>
 
-							</div>
+                            </div>
 
                         </div>
                         <div id="{{_form}}Finance" class="tab-pane fade" role="tabpanel">
                             <div class="block">
-                            <wb-foreach wb="table=finance&size=100&sort=date:d" wb-filter='{"member":"{{id}}"}'>
-                                <a data-ajax="{'url':'/cms/ajax/form/finance/edit/{{id}}','html':'.members-edit-modal'}" class="btn btn-sm btn-info mb-1 mr-1">
-                                {{date("d.m.Y",strtotime({{date}}))}}
-                                </a> 
-                            </wb-foreach>
-                             
-                              
-                                </div>
+                                <wb-foreach wb="table=finance&size=100&sort=date:d" wb-filter='{"member":"{{id}}"}'>
+                                    <a data-ajax="{'url':'/cms/ajax/form/finance/edit/{{id}}','html':'.members-edit-modal'}"
+                                        class="btn btn-sm btn-info mb-1 mr-1">
+                                        {{date("d.m.Y",strtotime({{date}}))}}
+                                    </a>
+                                </wb-foreach>
+
+
+                            </div>
                         </div>
                         <div id="{{_form}}Visits" class="tab-pane fade" role="tabpanel">
                             <div class="block">
-                            <wb-foreach wb="table=visits&size=100&sort=id:d" wb-filter='{"members": {"$like":"{{id}}"} }'>
-                                <span class="btn btn-sm btn-info mb-1 mr-1">{{id}}</span>
-                            </wb-foreach>
+                                <wb-foreach wb="table=visits&size=100&sort=id:d"
+                                    wb-filter='{"members": {"$like":"{{id}}"} }'>
+                                    <span class="btn btn-sm btn-info mb-1 mr-1">{{id}}</span>
+                                </wb-foreach>
                             </div>
                         </div>
                         <div id="{{_form}}Images" class="tab-pane fade" role="tabpanel">
@@ -182,18 +211,18 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        if ($('input[name=child]').val() !== "on") {
+$(document).ready(function() {
+    if ($('input[name=child]').val() !== "on") {
+        $("#membersEditForm .parents").hide();
+    }
+    $('input[name=child]').on('change', function(event, state) {
+        if ($(this).prop("checked")) {
+            $("#membersEditForm .parents").show();
+        } else {
             $("#membersEditForm .parents").hide();
         }
-        $('input[name=child]').on('change', function (event, state) {
-            if ($(this).prop("checked")) {
-                $("#membersEditForm .parents").show();
-            }
-            else {
-                $("#membersEditForm .parents").hide();
-            }
-        });
     });
+});
 </script>
+
 </html>

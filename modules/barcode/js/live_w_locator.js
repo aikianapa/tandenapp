@@ -282,9 +282,12 @@ $.fn.barcode = function() {
     });
 
     Quagga.onDetected(function(result) {
-        var code = result.codeResult.code;
-        $caner.trigger("modBarcode",code);
-        console.log("Trigger: modBarcode ["+code+"]");
+        if ($caner.data('ready') == undefined || $caner.data('ready') == true) {
+            $caner.data('ready', false);
+            var code = result.codeResult.code;
+            $caner.trigger("modBarcode",code);
+            console.log("Trigger: modBarcode ["+code+"]");
+        }
     });
 
 

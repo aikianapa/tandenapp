@@ -1,0 +1,4 @@
+{
+    "php-cs-fixer.formatHtml": true,
+    "php-cs-fixer.executablePathWindows": "C:\\Users\\User\\vendor\\bin\\phpcs.bat"
+}

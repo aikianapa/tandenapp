@@ -1,6 +1,13 @@
 <?php
 class ticketsClass extends cmsFormsClass {
 
+    public function beforeItemShow(&$item) {
+        $item['show'] = [];
+        if (isset($item['member']) AND $item['member']> "") $item['show']['member'] = wbCorrelation("members",$item['member'],"name");
+        $item['start'] =  date('d.m.Y',strtotime($item['start']));
+        $item['stop'] =  date('d.m.Y',strtotime($item['stop']));
+    }
+
   function ticket() {
       $app = $this->date();
   }

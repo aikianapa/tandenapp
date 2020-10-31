@@ -1,6 +1,5 @@
 <?php
 require(__DIR__."/../tickets/_class.php");
-
 class visitsClass extends cmsFormsClass
 {
     public function beforeItemShow(&$item)

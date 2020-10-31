@@ -26,8 +26,8 @@
             <td>{{date}}</td>
             <td>{{wbCorrelation("members",{{member}},"name")}}</td>
             <td>{{tarif}}</td>
-            <td>{{wallet}}</td>
-            <td>{{summ}}</td>
+            <td fld="wallet">{{wallet}}</td>
+            <td fld="summ">{{summ}}</td>
         </tr>
     </wb-foreach>
 </table>

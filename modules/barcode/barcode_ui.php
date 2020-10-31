@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width; initial-scale=1.0; user-scalable=no" />
 
 
-    <section id="container" class="row">
+    <section id="modBarcodeContainer" class="row">
         <div class="controls d-none">
             <fieldset class="input-group">
                 <button class="stop">Stop</button>
@@ -90,12 +90,14 @@
             "js/quagga.min.js",
             "js/live_w_locator.js"
           ],null,function(){
-              $("#container").barcode();
+            if ($("#modBarcodeContainer").data('loaded') == undefined) {
+                  $("#modBarcodeContainer").barcode();
+                  $("#modBarcodeContainer").data('loaded',true);
+            }
+
           });
           wbapp.loadStyles([
-            "css/styles.css",
-            "css/fonts.css",
-            "css/colors.css"
+            "css/styles.less"
           ]);
       </script>
 
