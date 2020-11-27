@@ -118,8 +118,8 @@
     }
   });
 
-  $("#visitData").off("ajax-done");
-  $("#visitData").on("ajax-done",function(ev,params){
+  $("#visitData").off("wb-ajax-done");
+  $("#visitData").on("wb-ajax-done",function(ev,params){
     if (params.form !== undefined && params.form == "#visitData") {
       if (params.data !== undefined) {
           if (params.data.error == false) {
