@@ -1,5 +1,6 @@
 $.fn.barcode = function() {
-    console.log('$.fn.barcode');
+    var lastResult = null;
+
     Quagga.init({
         inputStream: {
             name: "Live",
@@ -30,6 +31,12 @@ $.fn.barcode = function() {
         Quagga.start();
     });
 
+
+    if (Quagga.ready !== undefined) {
+        return;
+    }
+    Quagga.ready = true;
+
     Quagga.onProcessed(function (result) {
         var drawingCtx = Quagga.canvas.ctx.overlay,
             drawingCanvas = Quagga.canvas.dom.overlay;
@@ -55,10 +62,13 @@ $.fn.barcode = function() {
     });
 
     Quagga.onDetected(function(result) {
-            Quagga.stop();
             var code = result.codeResult.code;
-            console.log("Reading: "+code);
-            wbapp.ajax({ url: "/cms/ajax/form/members/view/" + code, "html": ".content-body" });
+            if (lastResult !== code && code.substr(0,3) == "357") {
+                Quagga.stop();
+                lastResult = code;
+                wbapp.ajax({ url: "/cms/ajax/form/members/view/" + code, "html": ".content-body" });
+                setTimeout(function () { lastResult = null;},1000);
+            }
     });
 
 

@@ -17,13 +17,12 @@
             "js/adapter.js",
             "js/quagga.min.js",
             "js/live_w_locator.js"
-          ],"modBarcodeStart",function(){
-            if ($("#modBarcodeContainer").data('loaded') == undefined) {
-                  $("#modBarcodeContainer").barcode();
-                  $("#modBarcodeContainer").data('loaded',true);
-            }
+          ],"modBarcodeStart");
 
-          });
+          $(document).one("modBarcodeStart",function(){
+              $("#modBarcodeContainer").barcode();
+          })
+
           wbapp.loadStyles([
             "css/styles.less"
           ]);

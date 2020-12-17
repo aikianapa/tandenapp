@@ -110,8 +110,7 @@
   </wb-empty>
 </div>
 </wb-data>
-<script>
-
+<script type="wbapp">
   $(document).on("wb-save-done",function(ev,params){
     if (params.params.url == "/ajax/save/finance/") {
         $("#visitData .btn-success").trigger('tap click');
@@ -147,10 +146,11 @@
   });
   $("#visitData input[name=date]").off('change');
   $("#visitData input[name=date]").on('change', async function(){
-      let res = await wbapp.postSync('/cms/ajax/form/visits/check/',{
+      let res = wbapp.postSync('/cms/ajax/form/visits/check/',{
         date:$("#visitData input[name=date]").val(),
         member:$("#visitData input[name=member]").val()
       });
+
       if (res.visit == false) {
           $("#visitData .check").addClass("d-none");
       } else {
