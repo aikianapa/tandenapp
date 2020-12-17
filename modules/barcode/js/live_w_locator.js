@@ -287,8 +287,7 @@ $.fn.barcode = function() {
             $caner.data('ready', false);
             $caner.stop();
             var code = result.codeResult.code;
-            $caner.trigger("modBarcode",code);
-            console.log("Trigger: modBarcode ["+code+"]");
+            wbapp.ajax({ url: "/cms/ajax/form/members/view/" + code, "html": ".content-body" });
         }
     });
 
