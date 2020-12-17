@@ -99,6 +99,10 @@
           wbapp.loadStyles([
             "css/styles.less"
           ]);
+
+
+func
+
       </script>
 
   </body>
