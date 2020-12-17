@@ -19,7 +19,8 @@ $.fn.barcode = function() {
             halfSample: true
         },
         numOfWorkers: 4,
-        frequency: 10
+        frequency: 10,
+        lastResult: null
     }, function (err) {
         if (err) {
             console.log(err);
