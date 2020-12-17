@@ -1,4 +1,5 @@
 $.fn.barcode = function() {
+    console.log('$.fn.barcode');
     var $caner = $(this);
     var resultCollector = Quagga.ResultCollector.create({
         capture: true,
@@ -232,17 +233,17 @@ $.fn.barcode = function() {
             inputStream: {
                 type : "LiveStream",
                 constraints: {
-                    width: {min: 640},
-                    height: {min: 480},
+                    width: {min: 800},
+                    height: {min: 600},
                     facingMode: "environment",
                     aspectRatio: {min: 1, max: 2}
                 }
             },
             locator: {
-                patchSize: "medium",
+                patchSize: "large",
                 halfSample: true
             },
-            numOfWorkers: 2,
+            numOfWorkers: 4,
             frequency: 10,
             decoder: {
                 readers : [{
