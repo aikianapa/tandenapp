@@ -32,8 +32,8 @@
                     <span>Resolution (width)</span>
                     <select name="input-stream_constraints">
                         <option value="320x240">320px</option>
-                        <option selected="selected" value="640x480">640px</option>
-                        <option value="800x600">800px</option>
+                        <option value="640x480">640px</option>
+                        <option selected="selected" value="800x600">800px</option>
                         <option value="1280x720">1280px</option>
                         <option value="1600x960">1600px</option>
                         <option value="1920x1080">1920px</option>
@@ -44,14 +44,14 @@
                     <select name="locator_patch-size">
                         <option value="x-small">x-small</option>
                         <option value="small">small</option>
-                        <option selected="selected" value="medium">medium</option>
-                        <option value="large">large</option>
+                        <option value="medium">medium</option>
+                        <option selected="selected" value="large">large</option>
                         <option value="x-large">x-large</option>
                     </select>
                 </label>
                 <label>
                     <span>Half-Sample</span>
-                    <input type="checkbox" checked="checked" name="locator_half-sample" />
+                    <input type="checkbox"  name="locator_half-sample" />
                 </label>
                 <label>
                     <span>Workers</span>

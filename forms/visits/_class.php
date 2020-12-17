@@ -23,9 +23,10 @@ class visitsClass extends cmsFormsClass
         $list = [];
         $line = [];
         $rep = [];
-        if ($app->vars('_post.formdata.month') == "") {$app->vars('_post.formdata.month',date('Y-m'));}
-        if ($app->vars('_post.formdata.month')>"") {
-            $mon = explode("-", $app->vars('_post.formdata.month'));
+        $month = $app->vars('_post.formdata.month');
+        if ($month == "") {$app->vars('_post.formdata.month',date('Y-m'));}
+        if ($month>"") {
+            $mon = explode("-", $month);
             $days = cal_days_in_month(CAL_GREGORIAN, $mon[1], $mon[0]);
             for ($i=1;$i<=$days;$i++) {
                 $line[$i] = "";
@@ -33,12 +34,12 @@ class visitsClass extends cmsFormsClass
             $rep = [];
 
 
-						if ($app->vars('_post.formdata.month') >= '2020-08') {
+						if ($month >= '2020-08') {
 								$tickets = $app->itemList("tickets", [
 									'filter' => [
 											'$and' => [
-													'$gte' => ['used' => $app->vars('_post.formdata.month').'-01'],
-													'$lte' => ['used' => $app->vars('_post.formdata.month').'-31']
+													'$gte' => ['used' => $month.'-01'],
+													'$lte' => ['used' => $month.'-31']
 											]
 									]
 								]);
@@ -57,7 +58,7 @@ class visitsClass extends cmsFormsClass
 
 						} else {
 								$list = $app->itemList("visits", [
-		                'filter' => ['month' => $app->vars('_post.formdata.month') ]
+		                'filter' => ['month' => $month ]
 		            ]);
 		            $list = $list["list"];
 								foreach ($list as $item) {
