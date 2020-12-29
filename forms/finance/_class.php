@@ -24,7 +24,9 @@ class financeClass extends cmsFormsClass {
 	      } else {
 	          $stop = date('Y-m-d',strtotime($start. '+'.$item['monthes'].' month -1 day'));
 	      }
-				if (!isset($app->route->item) OR $app->route->item == '_new' ) $newitem = true;
+                if (!isset($app->route->item) or $app->route->item == '_new') {
+                    $newitem = $item['id'] = wbNewId('', 'fi');
+                }
 
 				if ($newitem) {
 						/******* При первом сохранении чистим кредиты  ********/

@@ -38,7 +38,7 @@
 
 
     <div class="list-group m-2" id="{{_form}}List">
-      <wb-foreach data-ajax="{'url':'/ajax/form/{{_form}}/list/','size':'15','sort':'date:d','bind':'cms.list.{{_form}}','render':'client'}">
+      <wb-foreach data-ajax="{'url':'/ajax/form/{{_form}}/list/','size':'15','sort':'_created:d','bind':'cms.list.{{_form}}','render':'client'}">
         <div class="list-group-item d-flex align-items-center">
 
             <div>
