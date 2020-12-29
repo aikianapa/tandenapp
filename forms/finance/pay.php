@@ -90,8 +90,7 @@
             $modal.find("[name=lessons]").val(data.lessons);
             $modal.find("[name=name]").val(("Абонемент " + $(this).find("option:selected").text()).replace(/\s*\n\s*/g, " ").trim());
         }).trigger("change");
-        $("#{{_form}}EditForm input[name=date]").on('change', async function() {
-            console.log('#{{_form}}DataCreditsTpl');
+        $("#{{_form}}EditForm input[name=date]").on('change', function() {
             wbapp.renderTemplate({
                 _tid: '#{{_form}}DataCreditsTpl',
                 bind: 'cms.visit.tickets',

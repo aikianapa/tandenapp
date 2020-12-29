@@ -18,7 +18,9 @@
                 <div class="card bg-black-3">
                   <div class="card-body">
                     <div class='tickets' id='visitDataTickets'>
+                    </div>
                     <template id='visitDataTicketsTpl'>
+                          <div>
                           <nobr><i class="ri-coupon-3-line"></i> {{tickets}}</nobr>
                           {{#if credits }}
                           &nbsp;&nbsp;<nobr class='tx-danger'><i class="ri-coupon-3-fill"></i> {{credits}}</nobr>
@@ -29,8 +31,8 @@
                           {{else}}
                           <nobr class="tx-danger"><i class="ri-calendar-line"></i> Нет тикетов</nobr>
                           {{/if}}
+                          </div>
                     </template>
-                    </div>
                     <div><nobr><i class="ri-star-smile-line"></i> {{show.bdate}}</nobr></div>
                   </div>
                 </div>
@@ -150,6 +152,7 @@
         date:$("#visitData input[name=date]").val(),
         member:$("#visitData input[name=member]").val()
       });
+      wbapp.storage('cms.visit.tickets', res);
 
       if (res.visit == false) {
           $("#visitData .check").addClass("d-none");
