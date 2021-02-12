@@ -13,7 +13,7 @@
               <i class="ri-checkbox-circle-line pos-absolute d-none r-0 tx-100 check tx-success"></i>
               <i class="ri-close-circle-line pos-absolute d-none r-0 tx-100 uncheck tx-danger"></i>
 
-              <div class="pos-absolute r-10 b-10"><img src="/assets/images/aaac_small_stamp.png"></div>
+              <div class="pos-absolute r-10 b-10" wb-if="'{{aaac}}' == 'on'"><img src="/assets/images/aaac_small_stamp.png"></div>
               <div class="pos-absolute b-10 text-left">
                 <div class="card bg-black-3">
                   <div class="card-body">

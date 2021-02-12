@@ -22,9 +22,17 @@ class membersClass extends cmsFormsClass {
         } else {
             $item['show']['image'] = "/forms/members/user.jpg";
         }
-      
         $item['show']['bdate'] = date('d.m.Y',strtotime($item['bdate']));
         
+        $aaac = '';
+        is_array($item['apay']) ? null : $item['apay'] = [];
+        foreach($item['apay'] as $apay) {
+            if (isset($apay['apay_date']) AND date('Y', strtotime($apay['apay_date'])) == date('Y')-1) {
+                $aaac = 'on';
+                break;
+            }
+        }
+        $item['aaac'] = $aaac;
     }
 
 }
