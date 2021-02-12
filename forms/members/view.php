@@ -159,7 +159,7 @@
       } else {
           $("#visitData .check").removeClass("d-none");
       }
-      wbapp.renderTemplate({
+      wbapp.renderClient({
         _tid:'#visitDataTicketsTpl',
         bind:'cms.visit.tickets',
         target:'#visitDataTickets'

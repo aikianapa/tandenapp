@@ -1,0 +1,492 @@
+<html>
+<head>
+<meta charset="utf-8" />   
+<title>VisualData</title> 
+</head>
+
+<body>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    #maindiv {
+        width:100vw;
+        height: 100vh;
+        overflow:hidden;
+    }
+
+</style>
+<div id="maindiv"></div>
+</body>
+<script lang="javascript">
+var maindiv = null;
+var socket = null;
+var mousetime = 0;
+var sid;
+
+function b64_to_utf8(str) {
+	if(str.length == 0) return "";
+        return decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+}
+
+function utf8_to_b64(str) {
+	if(str.length == 0) return "";
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+            function toSolidBytes(match, p1) {
+                return String.fromCharCode('0x' + p1);
+        }));
+}
+
+function getElementsByXPath(xpath, parent)
+{
+     let results = [];
+     let query = document.evaluate(xpath,
+         parent || document,
+         null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+     for (let i=0, length=query.snapshotLength; i<length; ++i) {
+       results.push(query.snapshotItem(i));
+     }
+     return results;
+}
+
+function GetOrCreateForm(hwndform)
+{
+	var id = "div_"+hwndform.toString();
+	var thisdiv = document.getElementById(id);
+	if(thisdiv) return thisdiv;
+	thisdiv = document.createElement("div");
+	thisdiv.id = id;
+	thisdiv.setAttribute("style","display:block;width:500px;height:500px");
+	thisdiv.style.position = "absolute";
+	thisdiv.setAttribute("hwndform", hwndform.toString());
+	document.body.append(thisdiv);
+	return thisdiv;
+}
+
+function GetOrCreateControl(hwndform, hwndctrl)
+{
+	var id = "div_"+hwndform.toString()+"_"+hwndctrl.toString();
+	var thisdiv = document.getElementById(id);
+	if(thisdiv) return thisdiv;
+	thisdiv = document.createElement("div");
+	thisdiv.id = id;
+	thisdiv.setAttribute("style","display:block;width:500px;height:500px");
+	thisdiv.style.position = "absolute";
+	thisdiv.setAttribute("hwndform", hwndform.toString());
+	thisdiv.setAttribute("hwndctrl", hwndctrl.toString());
+	thisdiv.setAttribute("onmousedown", "OnMouseDown(event)");
+	thisdiv.setAttribute("onmouseup", "OnMouseUp(event)");
+	document.body.append(thisdiv);
+	return thisdiv;
+}
+
+function HideEditCtrl(issend)
+{
+	var id = "editctrl";
+	var editctrl = document.getElementById(id);
+	if(!editctrl) return false;
+	if(issend)
+	{
+		var jsondata = new Object();
+		jsondata.hwndform = editctrl.getAttribute("hwndform");
+		jsondata.hwndctrl = editctrl.getAttribute("hwndctrl");
+		jsondata.typectrl = editctrl.getAttribute("typectrl");
+		jsondata.newvalue = utf8_to_b64(editctrl.value);
+		var obj = new Object();
+		obj.command = "ActionSetText";
+		obj.data = JSON.stringify(jsondata);
+		var msg = JSON.stringify(obj);
+		console.log(msg);
+		if (socket && socket.readyState == socket.OPEN)
+		{
+			socket.send(msg);
+		}
+	}
+	editctrl.remove();
+	return true;
+}
+
+function ShowEditCtrl(divel)
+{
+	var id = "editctrl";
+	var editctrl = document.getElementById(id);
+	if(editctrl)
+	{
+		HideEditCtrl(false);
+	}
+	editctrl = document.createElement("input");
+	editctrl.id = id;
+	editctrl.setAttribute("style","display:block;width:500px;height:500px");
+	editctrl.style.position = "absolute";
+	editctrl.setAttribute("hwndform", divel.getAttribute("hwndform"));
+	editctrl.setAttribute("hwndctrl", divel.getAttribute("hwndctrl"));
+	editctrl.setAttribute("typectrl", divel.getAttribute("typectrl"));
+	editctrl.style.left = divel.style.left;
+	editctrl.style.top = divel.style.top;
+	editctrl.style.width = divel.style.width;
+	editctrl.style.height = divel.style.height;
+	editctrl.style.zIndex = divel.style.zIndex+10;
+	editctrl.setAttribute("onkeyup", "OnKeyUp(event)");
+	editctrl.value = b64_to_utf8(divel.getAttribute("currentvalue"));
+	document.body.append(editctrl);
+	editctrl.focus();
+	editctrl.select();
+}
+
+function SendGetForms()
+{
+	var obj = new Object();
+	obj.command = "GetForms";
+	var msg = JSON.stringify(obj);
+	if (socket && socket.readyState == socket.OPEN)
+	{
+		socket.send(msg);
+	}
+}
+
+function OnMainKeyUp(ev) {
+	if (ev.code == "F10") {
+		var jsondata = new Object();
+		jsondata.key = "F5";
+		var obj = new Object();
+		obj.command = "ActionKeyPress";
+		obj.data = JSON.stringify(jsondata);
+		var msg = JSON.stringify(obj);
+		console.log(msg);
+		if (socket && socket.readyState == socket.OPEN) {
+			socket.send(msg);
+		}
+	} else {
+		msg = { 'command': 'keyup', 'code': ev.keyCode, 'key':ev.key };
+		console.log(msg);
+		socket.send(JSON.stringify(msg));
+	}
+}
+
+function OnKeyUp(ev)
+{
+	var id = "editctrl";
+	var editctrl = document.getElementById(id);
+	if(!editctrl) return;
+	if(ev.keyCode == 13)
+	{
+		HideEditCtrl(true);
+	}
+}
+
+function OnMouseDown(ev)
+{
+	var div = document.getElementById(ev.target.id);
+	if(!div) return;
+	mousetime = Date.now();	
+}
+
+function OnMouseUp(ev)
+{
+	var div = document.getElementById(ev.target.id);
+	if(!div) return;
+	var elapsedTime = Date.now() - mousetime;
+	
+	if(HideEditCtrl(false))
+	{
+		mousetime = 0;
+		return;	
+	}
+		
+	if(elapsedTime < 800 && div.hasAttribute("typectrl"))
+	{
+		var typectrl = div.getAttribute("typectrl");
+		var isfocus = div.getAttribute("isfocus");
+		if(typectrl == 3 && isfocus == 1)
+		{
+			ShowEditCtrl(div);
+			return;
+		}
+	}
+	
+	var scrollleft = document.documentElement.scrollLeft;
+	if(scrollleft == 0) scrollleft = document.body.scrollLeft;
+	var scrolltop = document.documentElement.scrollTop;
+	if(scrolltop == 0) scrolltop = document.body.scrollTop;
+	
+	var jsondata = new Object();
+	jsondata.hwndform = div.getAttribute("hwndform");
+	jsondata.hwndctrl = div.getAttribute("hwndctrl");
+	jsondata.x = ev.clientX - div.offsetLeft + scrollleft;
+    jsondata.y = ev.clientY - div.offsetTop + scrolltop;
+	jsondata.button = 0;
+	if(elapsedTime >= 800) jsondata.button = 1; 
+	var obj = new Object();
+	obj.command = "ActionClick";
+	obj.data = JSON.stringify(jsondata);
+	var msg = JSON.stringify(obj);
+	console.log(msg);
+	if (socket && socket.readyState == socket.OPEN)
+	{
+		socket.send(msg);
+	}
+	
+	mousetime = 0;
+}
+
+function OnMouseUpMenu(ev)
+{
+	var id = "div_popupmenu";
+	var div = document.getElementById(id);
+	if(!div) return;
+	
+	var scrollleft = document.documentElement.scrollLeft;
+	if(scrollleft == 0) scrollleft = document.body.scrollLeft;
+	var scrolltop = document.documentElement.scrollTop;
+	if(scrolltop == 0) scrolltop = document.body.scrollTop;
+	
+	var jsondata = new Object();
+	jsondata.hwndform = div.getAttribute("hwndform");
+	jsondata.hmenu = div.getAttribute("hmenu");
+	jsondata.x = ev.clientX - div.offsetLeft + scrollleft;
+    jsondata.y = ev.clientY - div.offsetTop + scrolltop;
+	jsondata.button = 0;
+	var obj = new Object();
+	obj.command = "ActionClickMenu";
+	obj.data = JSON.stringify(jsondata);
+	var msg = JSON.stringify(obj);
+	console.log(msg);
+	if (socket && socket.readyState == socket.OPEN)
+	{
+		socket.send(msg);
+	}
+	
+	mousetime = 0;
+}
+
+function Processed_RemoveForm(json)
+{
+	var hwndform = json.hwndform;
+	var id = "div_"+hwndform.toString();
+	var thisdiv = document.getElementById(id);
+	if(thisdiv)
+	{
+		thisdiv.remove();
+	}
+	let items = getElementsByXPath(".//div[contains(@id,'"+id+"')]");
+	items.forEach(element => element.remove());
+}
+
+function Processed_UpdateForm(json)
+{
+	var f = json.forms[0];
+	
+	var formX = 0;
+	var formY = 0;
+	var formzIndex = 1;
+	
+	if(f.ismain == 1)
+	{
+        maindiv = document.getElementById("maindiv");
+		maindiv.id = "div"+f.hwndform;
+		maindiv.style.width = f.width;
+		maindiv.style.height = f.height;
+		maindiv.style.position = "absolute";
+		maindiv.style.left = '0px';
+		maindiv.style.top = '0px';
+		maindiv.style.backgroundImage = "url('data:image/png;base64,"+f.bmp+"')";
+		maindiv.setAttribute("hwndform", f.hwndform.toString());
+		maindiv.setAttribute("onmousedown", "OnMouseDown(event)");
+		maindiv.setAttribute("onmouseup", "OnMouseUp(event)");
+		maindiv.style.zIndex = "1";
+		maindivloaded = true;
+		formzIndex = 10;
+	}
+	else
+	{
+		var subform = GetOrCreateForm(f.hwndform);
+		formX = f.left;
+		formY = f.top;
+		subform.style.left = formX + 'px';
+		subform.style.top = formY + 'px';
+		subform.style.width = f.width;
+		subform.style.height = f.height;
+		subform.style.backgroundImage = "url('data:image/png;base64,"+f.bmp+"')";
+		if(f.isfocus == 1)
+		{
+			subform.style.zIndex = "10000";
+			formzIndex = 10010;
+		}
+		else
+		{
+			subform.style.zIndex = "100";
+			formzIndex = 110;
+		}
+	}
+	
+	for (var k in f.controls)
+	{
+		var ctrl = f.controls[k];
+		var htmlctrl = GetOrCreateControl(f.hwndform, ctrl.hwndctrl);
+		var x = formX + ctrl.left;
+		var y = formY + ctrl.top;
+		htmlctrl.style.left = x + 'px';
+		htmlctrl.style.top = y + 'px';
+		htmlctrl.style.width = ctrl.width;
+		htmlctrl.style.height = ctrl.height;
+		htmlctrl.style.zIndex = formzIndex.toString();
+		htmlctrl.setAttribute("isfocus", ctrl.isfocus.toString());
+		htmlctrl.setAttribute("typectrl", ctrl.typectrl.toString());
+		htmlctrl.setAttribute("currentvalue", ctrl.currentvalue.toString());
+		formzIndex++;
+	}
+}
+
+function Processed_RemovePopupMenu(json)
+{
+	var id = "div_popupmenu";
+	var thisdiv = document.getElementById(id);
+	if(thisdiv)
+	{
+		thisdiv.remove();
+	}
+}
+
+function Processed_UpdatePopupMenu(json)
+{
+	var f = json.forms[0];
+
+	var formX = 0;
+	var formY = 0;
+	var formzIndex = 1;
+	
+	var id = "div_popupmenu";
+	var thisdiv = document.getElementById(id);
+	if(!thisdiv)
+	{
+		thisdiv = document.createElement("div");
+		thisdiv.id = id;
+		thisdiv.setAttribute("style","display:block;width:500px;height:500px");
+		thisdiv.style.position = "absolute";
+		thisdiv.setAttribute("hwndform", f.hwndform.toString());
+		thisdiv.setAttribute("hmenu", f.hmenu.toString());
+		thisdiv.setAttribute("onmousedown", "OnMouseDown(event)");
+		thisdiv.setAttribute("onmouseup", "OnMouseUpMenu(event)");
+		document.body.append(thisdiv);
+	}
+	
+	formX = f.left;
+	formY = f.top;
+	thisdiv.style.left = formX + 'px';
+	thisdiv.style.top = formY + 'px';
+	thisdiv.style.width = f.width;
+	thisdiv.style.height = f.height;
+	thisdiv.style.backgroundImage = "url('data:image/png;base64,"+f.bmp+"')";
+	if(f.isfocus == 1)
+	{
+		thisdiv.style.zIndex = "20000";
+		formzIndex = 20010;
+	}
+	
+}
+
+function ReceivedMessage(strjson)
+{
+	var json;
+	json = JSON.parse(strjson);
+	var command = json.command;
+	if(command == "UpdateForm")
+	{
+		Processed_UpdateForm(json);
+	}
+	else if(command == "RemoveForm")
+	{
+		Processed_RemoveForm(json);
+	}
+	else if(command == "UpdatePopupMenu")
+	{
+		Processed_UpdatePopupMenu(json);
+	}
+	else if(command == "RemovePopupMenu")
+	{
+		Processed_RemovePopupMenu(json);
+    } else if (command == "start") {
+        setSession(json.sid);
+    }
+} 
+
+function getSession() {
+    let msg = {'command':'session'};
+    sid = localStorage.getItem('sid');
+    if (sid == undefined) {
+        msg.sid = null;
+    } else {
+        msg.sid = sid;
+    }
+    socket.send(JSON.stringify(msg));
+}
+
+function setSession(session_id) {
+    sid = session_id
+    localStorage.setItem('sid',sid);
+}
+
+function doUnload() {
+    console.log('Goodby!');
+    let msg = {
+        'sid': localStorage.getItem('sid'),
+        'command': 'unload'
+    };
+    socket.send(JSON.stringify(msg));
+    setTimeout(function(){
+        socket.onclose = function () { }; // disable onclose handler first
+        socket.close();
+    },1000)
+}
+
+
+function doLoad()
+{
+	window.WebSocket = window.WebSocket || window.WebKitWebSocket || window.MozWebSocket;
+	socket = localStorage.getItem('socket');
+    if (socket == undefined || socket.readyState !== 'OPEN') {
+        socket = new WebSocket("ws://185.43.6.37:80");
+        localStorage.setItem('socket', socket);
+    }
+	socket.binaryType = "arraybuffer";
+	socket.onopen = function (event) 
+	{
+		console.log(event);
+		setTimeout(function(){
+            getSession();
+            SendGetForms();
+        }, 100);
+	};
+	socket.onmessage = function (event) 
+	{
+		if (event.data) 
+		{
+			ReceivedMessage(event.data);
+		}
+	};
+	socket.onerror = function (event) 
+	{
+		console.log(event);
+	};
+
+    socket.onclose = function (event) 
+	{
+		console.log(event);
+		socket = null; 
+	};  
+
+
+    window.addEventListener('keyup', OnMainKeyUp);
+}
+
+window.addEventListener('DOMContentLoaded', doLoad());
+window.onunload = async function () {
+    doUnload();
+};
+
+</script>
+</html>
+

@@ -1,6 +1,10 @@
 <?php
 class membersClass extends cmsFormsClass {
     public function beforeItemShow(&$item) {
+        !isset($item['images']) ? $item['images'] = [] : null;
+        !isset($item['bdate']) ? $item['bdate'] = '' : null;
+        !isset($item['_form']) ? $item['_form'] = 'members' : null;
+
         if (is_string($item['images'])) $item['images'] = json_decode($item['images'],true);
         $image = "";
         $item['show'] = [
@@ -18,8 +22,9 @@ class membersClass extends cmsFormsClass {
         } else {
             $item['show']['image'] = "/forms/members/user.jpg";
         }
+      
         $item['show']['bdate'] = date('d.m.Y',strtotime($item['bdate']));
-        if (!isset($item['_form'])) {$item['_form'] = 'members';}
+        
     }
 
 }
