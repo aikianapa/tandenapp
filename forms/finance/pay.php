@@ -91,7 +91,7 @@
             $modal.find("[name=name]").val(("Абонемент " + $(this).find("option:selected").text()).replace(/\s*\n\s*/g, " ").trim());
         }).trigger("change");
         $("#{{_form}}EditForm input[name=date]").on('change', function() {
-            wbapp.renderTemplate({
+            wbapp.renderClient({
                 _tid: '#{{_form}}DataCreditsTpl',
                 bind: 'cms.visit.tickets',
                 target: '#{{_form}}DataCredits'
