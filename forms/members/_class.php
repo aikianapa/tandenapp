@@ -1,5 +1,27 @@
 <?php
 class membersClass extends cmsFormsClass {
+
+    public function afterItemRead(&$item) {
+        $aaac = '';
+        $aaac_paydate = '';
+        $aaac_amount = '';
+
+        isset($item['apay']) ? null : $item['apay'] = [];
+        foreach((array)$item['apay'] as $apay) {
+            if (isset($apay['apay_date']) AND $apay['apay_date'] > '' AND date('Y', strtotime($apay['apay_date'])) == date('Y')) {
+                $aaac = 'on';
+                $aaac_paydate = $apay['apay_date'];
+                $aaac_amount = $apay['apay_sum'];
+
+                      //  echo($aaac_paydate.' '.$item['name']."\n");
+                break;
+            }
+        }
+        $item['aaac'] = $aaac;
+        $item['aaac_paydate'] = $aaac_paydate;
+        $item['aaac_amount'] = $aaac_amount;
+    }
+
     public function beforeItemShow(&$item) {
         !isset($item['images']) ? $item['images'] = [] : null;
         !isset($item['bdate']) ? $item['bdate'] = '' : null;
@@ -23,16 +45,6 @@ class membersClass extends cmsFormsClass {
             $item['show']['image'] = "/forms/members/user.jpg";
         }
         $item['show']['bdate'] = date('d.m.Y',strtotime($item['bdate']));
-        
-        $aaac = '';
-        is_array($item['apay']) ? null : $item['apay'] = [];
-        foreach($item['apay'] as $apay) {
-            if (isset($apay['apay_date']) AND date('Y', strtotime($apay['apay_date'])) == date('Y')-1) {
-                $aaac = 'on';
-                break;
-            }
-        }
-        $item['aaac'] = $aaac;
     }
 
 }

@@ -18,13 +18,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter_remove': 'active','filter_add':{'arch':''}}">Активные</a>
+            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter': 'clear','filter_add':{'arch':''}}">Активные</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter_remove': 'active','filter_add':{ 'arch': 'on' } }">Архивные</a>
+            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter': 'clear','filter_add':{ 'arch': 'on' } }">Архивные</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter_remove': 'active','filter_add':{ 'aaac': 'on' } }">АКАА</a>
+            <a class="nav-link" href="#" data-ajax="{'target':'#{{_form}}List','filter': 'clear','filter_add':{ 'aaac': 'on' } }">АКАА</a>
           </li>
         </ul>
         <form class="form-inline mg-t-10 mg-lg-0">
@@ -46,6 +46,9 @@
                 class="tx-13 tx-inverse mg-b-0">
                 <span class="badge badge-secondary"><i class="ri-barcode-line"></i> {{card}}</span>
                 <i class="ri-user-3-line"></i> {{name}}
+                {{#if aaac=='on' }}
+                <span class="badge badge-danger">АКАА</span>
+                {{/if}}
               </a>
             </div>
 

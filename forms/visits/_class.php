@@ -32,17 +32,18 @@ class visitsClass extends cmsFormsClass
                 $line[$i] = "";
             }
             $rep = [];
-
-
 						if ($month >= '2020-08') {
 								$tickets = $app->itemList("tickets", [
 									'filter' => [
 											'$and' => [
-													'$gte' => ['used' => $month.'-01'],
-													'$lte' => ['used' => $month.'-31']
+													'used' => [
+                                                        '$gte' => $month.'-01',
+                                                        '$lte' => $month.'-31'
+                                                    ],
 											]
 									]
 								]);
+
 								foreach($tickets['list'] as $item) {
 										if (!isset($rep[$item['member']])) {
 												$rep[$item['member']] = [
