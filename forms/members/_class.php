@@ -4,7 +4,7 @@ class membersClass extends cmsFormsClass {
     public function afterItemRead(&$item) {
         $aaac = '';
         $aaac_paydate = '';
-        $aaac_amount = '';
+        $aaac_amount = 0;
 
         isset($item['apay']) ? null : $item['apay'] = [];
         foreach((array)$item['apay'] as $apay) {
@@ -20,6 +20,12 @@ class membersClass extends cmsFormsClass {
         $item['aaac'] = $aaac;
         $item['aaac_paydate'] = $aaac_paydate;
         $item['aaac_amount'] = $aaac_amount;
+        if (isset($item['child']) && $item['child'] !== 'on') $item['child'] = 'off';
+        if (isset($item['archive']) && $item['archive'] !== 'on') $item['archive'] = 'off';
+        isset($item['bdate']) ? null : $item['bdate'] = '1970-01-01';
+        $item['byear'] = date('Y',strtotime($item['bdate']));
+        $item['age'] = date_diff(date_create($item['bdate']), date_create('now'))->y;
+        if ($item['age'] < 18) $item['child'] = 'on';
     }
 
     public function beforeItemShow(&$item) {
@@ -45,6 +51,11 @@ class membersClass extends cmsFormsClass {
             $item['show']['image'] = "/forms/members/user.jpg";
         }
         $item['show']['bdate'] = date('d.m.Y',strtotime($item['bdate']));
+
+        $item['byear'] = date('Y',strtotime($item['bdate']));
+        $item['age'] = date_diff(date_create($item['bdate']), date_create('now'))->y;
+        if ($item['age'] < 18) $item['child'] = 'on';
+
     }
 
 }

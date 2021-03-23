@@ -20,14 +20,13 @@
 
 
                       <button class="form-control tx-left dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" wb-if='"{{company}}" > "" ==> disabled'>
+                        aria-haspopup="true" aria-expanded="false" wb-if='"{{member}}" > "" ==> disabled'>
                         <span wb-if='"{{member}}" == ""'>Клиент...</span>
                         <wb-data wb="{'table':'members','item':'{{member}}'}">
                         {{name}}
                         </wb-data>
                       </button>
                       <div class="dropdown-menu">
-
                         <div class="search-form">
                           <input type="hidden" name="member" />
                           <input type="search" class="form-control" placeholder="Клиент..." data-ajax="{'target':'#{{_form}}ModalEditMembers','filter_add':{ 'name': {'$like' : '$value'} } }" />
