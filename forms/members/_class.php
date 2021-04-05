@@ -17,6 +17,19 @@ class membersClass extends cmsFormsClass {
                 break;
             }
         }
+        $ldate = '';
+        $level = '';
+        if (isset($item['exam'])) {
+        foreach((array)$item['exam'] as $exam) {
+            if ($exam['ldate'] > $ldate AND $exam['level'] > '') {
+                $ldate = $exam['ldate'];
+                $level = $exam['level']. ' ' . $exam['kudan'];
+            }
+        }
+        }
+        $level == '' ? $ldate = '' : $ldate = date('d.m.Y',strtotime($ldate));
+        $item['level'] = $level;
+        $item['ldate'] = $ldate;
         $item['aaac'] = $aaac;
         $item['aaac_paydate'] = $aaac_paydate;
         $item['aaac_amount'] = $aaac_amount;
@@ -35,9 +48,7 @@ class membersClass extends cmsFormsClass {
 
         if (is_string($item['images'])) $item['images'] = json_decode($item['images'],true);
         $image = "";
-        $item['show'] = [
-            "image"=> $image
-        ];  
+        $item['show'] = ["image"=> $image];  
         
         if (isset($item['images'][0]) && !is_file($_ENV['path_app'].$item['images'][0]['img'])) {
             $image = '/uploads/members/'.$item['id'].'/'.$item['images'][0]['img'];
