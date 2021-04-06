@@ -16,7 +16,8 @@
         'filter': {
             'month':'{{_var.month}}',
             'wallet': {'$not':''},
-            'tariff': {'$not':'credit'}
+            'tariff': {'$not':'credit'},
+            'summ': {'$gt':'0'}
         },
         'group': 'wallet',
         'total': 'summ'
@@ -26,8 +27,8 @@
             <td>{{date}}</td>
             <td>{{wbCorrelation("members",{{member}},"name")}}</td>
             <td>{{tarif}}</td>
-            <td fld="wallet">{{wallet}}</td>
-            <td fld="summ">{{summ}}</td>
+            <td>{{wallet}}</td>
+            <td>{{summ}}</td>
         </tr>
     </wb-foreach>
 </table>

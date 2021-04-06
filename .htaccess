@@ -6,6 +6,7 @@ Options +FollowSymLinks
 RewriteEngine On
 
 RewriteRule ^(.*)\.less$ index.php 
+RewriteRule ^(.*)\.scss$ index.php 
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
